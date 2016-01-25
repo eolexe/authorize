@@ -6,9 +6,10 @@ import (
 )
 
 var (
-	INVALID_CONTENT      = errors.New("authorize: request content is invalid")
-	INVALID_VALUE_LENGTH = errors.New("authorize: invalid length of field")
-	DUPLICATE_RECORD     = errors.New("authorize: duplicate record")
+	INVALID_CONTENT       = errors.New("authorize: request content is invalid")
+	INVALID_VALUE_LENGTH  = errors.New("authorize: invalid length of field")
+	DUPLICATE_TRANSACTION = errors.New("authorize: duplicate transaction. Wait a few seconds.")
+	DUPLICATE_RECORD      = errors.New("authorize: duplicate record")
 )
 
 func parseError(e *Error) error {
@@ -26,6 +27,7 @@ var (
 	errMap = map[string]error{
 		"E00015": INVALID_VALUE_LENGTH,
 		"E00013": INVALID_CONTENT,
+		"E00027": DUPLICATE_TRANSACTION,
 		"E00039": DUPLICATE_RECORD,
 	}
 )

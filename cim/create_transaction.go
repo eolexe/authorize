@@ -25,9 +25,11 @@ type TransactionRequest struct {
 }
 
 type CreateTransactionResponse struct {
-	AuthCode      string `json:"authCode"`
-	TransactionId string `json:"transId"`
-	TransHash     string `json:"transHash"`
+	TransactionResponse struct {
+		AuthCode      string `json:"authCode"`
+		TransactionId string `json:"transId"`
+		TransHash     string `json:"transHash"`
+	}
 }
 
 func (c *CreateTransactionRequest) ResponseStruct() interface{} {

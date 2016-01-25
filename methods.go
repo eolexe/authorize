@@ -58,7 +58,7 @@ func (c *Client) CreateCustomerPaymentProfileTransaction(t *cim.Transaction) (st
 	r := c.Do(req)
 	resp := r.ResponseStruct.(*cim.CreateTransactionResponse)
 
-	return resp.TransactionId, r.Err
+	return resp.TransactionResponse.TransactionId, r.Err
 }
 
 func (c *Client) RefundTransaction(t *cim.Transaction, transactionId string) error {
