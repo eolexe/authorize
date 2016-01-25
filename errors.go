@@ -1,9 +1,6 @@
 package authorize
 
-import (
-	"errors"
-	"log"
-)
+import "errors"
 
 var (
 	INVALID_CONTENT       = errors.New("authorize: request content is invalid")
@@ -15,8 +12,7 @@ var (
 func parseError(e *Error) error {
 	errGet, ok := errMap[e.Code]
 	if !ok {
-		log.Println("unknown error code", e.Code)
-		return errors.New(e.Text)
+		return errors.New(e.Text + ", with code " + e.Code)
 	}
 
 	err := errors.New(errGet.Error() + ", with code " + e.Code)
