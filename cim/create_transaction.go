@@ -30,6 +30,11 @@ type CreateTransactionResponse struct {
 		TransactionId string `json:"transId"`
 		TransHash     string `json:"transHash"`
 	}
+	Messages struct {
+		Message []struct {
+			Code string
+		}
+	}
 }
 
 func (c *CreateTransactionRequest) ResponseStruct() interface{} {

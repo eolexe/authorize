@@ -13,11 +13,13 @@ var (
 )
 
 func parseError(e *Error) error {
-	err, ok := errMap[e.Code]
+	errGet, ok := errMap[e.Code]
 	if !ok {
 		log.Println("unknown error code", e.Code)
 		return errors.New(e.Text)
 	}
+
+	err := errors.New(errGet.Error() + ", with code " + e.Code)
 
 	return err
 }
