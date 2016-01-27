@@ -10,12 +10,12 @@ var (
 )
 
 func parseError(e *Error) error {
-	errGet, ok := errMap[e.Code]
+	_, ok := errMap[e.Code]
 	if !ok {
 		return errors.New(e.Text + ", with code " + e.Code)
 	}
 
-	err := errors.New(errGet.Error() + ", with code " + e.Code)
+	err := errors.New(e.Text + ", with code " + e.Code)
 
 	return err
 }
