@@ -3,13 +3,21 @@ package authorize
 import "encoding/json"
 
 type Error struct {
-	Code string `json:"code"`
-	Text string `json:"text"`
+	TransactionResponse *struct {
+		Errors []struct {
+			ErrorCode string
+			ErrorText string
+		}
+	}
+	Messages *Message `json:"messages"`
 }
 
 type Message struct {
-	Code     string            `json:"resultCode"`
-	Messages []json.RawMessage `json:"message"`
+	Code     string `json:"resultCode"`
+	Messages []struct {
+		Code string
+		Text string
+	} `json:"message"`
 }
 
 type Response struct {
@@ -27,17 +35,15 @@ func ParseResponse(r *Response, buff []byte) *Response {
 		return r
 	}
 
-	// parse out to see if we have an error in the message
-	for i := range r.Messages.Messages {
-		if r.Messages.Code == "Error" {
-			mErr := &Error{}
-			r.Err = json.Unmarshal(r.Messages.Messages[i], mErr)
-			if r.Err != nil {
-				return r
-			}
-			r.Err = parseError(mErr)
+	if r.Messages.Code == "Error" {
+		mErr := &Error{}
+		r.Err = json.Unmarshal(r.Raw, mErr)
+		if r.Err != nil {
 			return r
 		}
+
+		r.Err = parseError(mErr)
+		return r
 	}
 
 	r.Err = json.Unmarshal(buff, r.ResponseStruct)

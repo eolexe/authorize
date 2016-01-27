@@ -10,12 +10,23 @@ var (
 )
 
 func parseError(e *Error) error {
-	_, ok := errMap[e.Code]
-	if !ok {
-		return errors.New(e.Text + ", with code " + e.Code)
+	if e.Messages == nil {
+		return nil
 	}
 
-	err := errors.New(e.Text + ", with code " + e.Code)
+	var err error
+	if e.TransactionResponse != nil {
+		if len(e.TransactionResponse.Errors) > 0 {
+			err = errors.New(e.TransactionResponse.Errors[0].ErrorText + ", with code " + e.Messages.Messages[0].Code)
+		}
+	}
+
+	/*
+		errGet, ok := errMap[e.Code]
+		if !ok {
+			return errors.New(e.Text + ", with code " + e.Code)
+		}
+	*/
 
 	return err
 }
